@@ -13,6 +13,9 @@ import javafx.scene.text.*;
 public class driver extends Application {
 	@Override
 	public void start(Stage baseStage) {
+	  /* creating the game here? */
+		diceGame Game = new diceGame();
+
 	  /* giving it a title */
 		baseStage.setTitle("diceGame JavaFX");
 
@@ -33,10 +36,10 @@ public class driver extends Application {
 	  /* create 6 images for dice faces */
 		Image face1 = new Image("one.png");
 		Image face2 = new Image("two.png");
-		//Image face3 = new Image("image/three.png");
-		//Image face4 = new Image("image/four.png");
-		//Image face5 = new Image("image/five.png");
-		//Image face6 = new Image("image/six.png");
+		Image face3 = new Image("three.png");
+		Image face4 = new Image("four.png");
+		Image face5 = new Image("five.png");
+		Image face6 = new Image("six.png");
 
       /* create and add children to the dieBox */
 		/* stuff for die1 */
@@ -62,13 +65,39 @@ public class driver extends Application {
 
 	  /* create and add children to the infoBox */
 		Button rollButton = new Button("Roll Dice");
-		rollButton.setPrefSize(135, 35);
-		rollButton.setFont(m20);
+			rollButton.setPrefSize(135, 35);
+			rollButton.setFont(m20);
+			rollButton.setOnMouseClicked(event ->{
+				  /* updates dice values */
+					Game.roll();
+
+			      /* updates die1 image */
+					int temp = Game.getDie1();
+					switch (temp){
+						case 1: die1.setImage(face1); break;
+						case 2: die1.setImage(face2); break;
+						case 3: die1.setImage(face3); break;
+						case 4: die1.setImage(face4); break;
+						case 5: die1.setImage(face5); break;
+						case 6: die1.setImage(face6); break;
+					}
+
+				  /* updates die2 image */
+					temp = Game.getDie2();
+					switch (temp){
+						case 1: die2.setImage(face1); break;
+						case 2: die2.setImage(face2); break;
+						case 3: die2.setImage(face3); break;
+						case 4: die2.setImage(face4); break;
+						case 5: die2.setImage(face5); break;
+						case 6: die2.setImage(face6); break;
+			}
+			});
 
 		Button exitButton = new Button("Exit");
-		exitButton.setPrefSize(60, 35);
-		exitButton.setFont(m20);
-		exitButton.setOnMouseClicked(event -> Platform.exit());
+			exitButton.setPrefSize(60, 35);
+			exitButton.setFont(m20);
+			exitButton.setOnMouseClicked(event -> Platform.exit());
 
 		infoBox.getChildren().addAll(rollButton, exitButton);
 
