@@ -30,8 +30,6 @@ public class driver extends Application {
         dieBox.setPadding(new Insets(10, 20, 10, 20));
 	    dieBox.setSpacing(10);
 	    dieBox.setStyle("-fx-background-color: #88BB88;");
-		dieBox.setAlignment(Pos.TOP_CENTER);
-
 
 	  /* create 6 images for dice faces */
 		Image face1 = new Image("one.png");
@@ -59,15 +57,38 @@ public class driver extends Application {
 	  /* create Hbox for info */
 		HBox infoBox = new HBox();
 		infoBox.setPadding(new Insets(10, 10, 10, 10));
-		infoBox.setSpacing(25);
+		infoBox.setSpacing(10);
 		infoBox.setStyle("-fx-background-color: #88FF88;");
-		infoBox.setAlignment(Pos.BOTTOM_CENTER);
 
 	  /* create and add children to the infoBox */
+		Label betLabel = new Label("Your Bet: ");
+			betLabel.setFont(m20);
+			betLabel.setPrefHeight(35);
+			betLabel.setAlignment(Pos.CENTER);
+
+		TextField userGuess = new TextField ();
+			userGuess.setPrefSize(30, 35);
+			userGuess.setAlignment(Pos.CENTER);
+			userGuess.setOnKeyReleased(event ->{
+				if (misc.isNumeric(userGuess.getText())) {
+					int temp = misc.toInt(userGuess.getText());
+					if(temp > 1 && temp < 13){
+						userGuess.setStyle("-fx-background-color: #888888;");
+						Game.setRoll(true);
+					}
+					else {
+						userGuess.setStyle("-fx-background-color: #FF8888;");
+						Game.setRoll(false);
+					}
+				}
+			});
+
+
 		Button rollButton = new Button("Roll Dice");
 			rollButton.setPrefSize(135, 35);
 			rollButton.setFont(m20);
 			rollButton.setOnMouseClicked(event ->{
+				if (Game.getRoll()){
 				  /* updates dice values */
 					Game.roll();
 
@@ -91,15 +112,19 @@ public class driver extends Application {
 						case 4: die2.setImage(face4); break;
 						case 5: die2.setImage(face5); break;
 						case 6: die2.setImage(face6); break;
-			}
-			});
+					}
+					if(Game.getTotal() == misc.toInt(userGuess.getText()) )
+						System.out.println("You guessed right");
+					else
+						System.out.println("You were wrong");
+			}});
 
 		Button exitButton = new Button("Exit");
 			exitButton.setPrefSize(60, 35);
 			exitButton.setFont(m20);
 			exitButton.setOnMouseClicked(event -> Platform.exit());
 
-		infoBox.getChildren().addAll(rollButton, exitButton);
+		infoBox.getChildren().addAll(betLabel, userGuess, rollButton, exitButton);
 
 		rootNode.add(dieBox, 0, 0);
 		rootNode.add(infoBox, 0, 1);
